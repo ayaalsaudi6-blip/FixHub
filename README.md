@@ -66,6 +66,16 @@ FixHub/
 ├── config/
 │   └── Database.php
 │
+├── screenshots/
+│   ├── admin-dashboard.png
+│   ├── booking-successfully.png
+│   ├── booking.png
+│   ├── home-page.png
+│   ├── login.png
+│   ├── register.png
+│   ├── services.png
+│   └── soft-delete.png
+│
 ├── booking.php
 ├── index.php
 ├── login.php
@@ -107,6 +117,40 @@ The database connection is handled through:
 ```text
 config/Database.php
 ```
+
+## Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home-page.png)
+
+### Services
+
+![Services](screenshots/services.png)
+
+### Login
+
+![Login](screenshots/login.png)
+
+### Register
+
+![Register](screenshots/register.png)
+
+### Booking
+
+![Booking](screenshots/booking.png)
+
+### Booking Successfully
+
+![Booking Successfully](screenshots/booking-successfully.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Soft Delete
+
+![Soft Delete](screenshots/soft-delete.png)
 
 ## How to Run the Project Locally
 
