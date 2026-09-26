@@ -139,7 +139,7 @@ config/Database.php
 
 ### Home Page
 
-![Home Page](screenshots/home-page.png)
+![Home Page](screenshots/Home%20Page.png)
 
 ### Services
 
@@ -171,12 +171,15 @@ config/Database.php
 
 ### Search Services
 
-![Search Services](screenshots/search-services.png)
+![Search Services](screenshots/Search%20Services.png)
 
 ### Notifications
 
-![Notifications](screenshots/notifications.png)
+![Notifications](screenshots/Notifications.png)
 
+### Toast Messages
+
+![Toast Messages](screenshots/Toast%20Messages.png)
 ### Toast Messages
 
 ![Toast Messages](screenshots/toast-messages.png)
