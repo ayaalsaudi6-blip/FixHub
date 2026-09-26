@@ -180,9 +180,6 @@ config/Database.php
 ### Toast Messages
 
 ![Toast Messages](screenshots/Toast%20Messages.png)
-### Toast Messages
-
-![Toast Messages](screenshots/toast-messages.png)
 
 ## How to Run the Project Locally
 
