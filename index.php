@@ -11,6 +11,16 @@ $pdo = $database->connect();
 $serviceObj = new Service($pdo);
 $services = $serviceObj->getPopular(8);
 
+$unreadCount = 0;
+
+if (isset($_SESSION['user_id'])) {
+
+    require_once "classes/Notification.php";
+
+    $notificationObj = new Notification($pdo);
+    $unreadCount = $notificationObj->getUnreadCount($_SESSION['user_id']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,11 +62,92 @@ $services = $serviceObj->getPopular(8);
             cursor: pointer;
         }
 
+        .notification-bell {
+            position: relative;
+            font-size: 20px;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            border-left: 4px solid #f97316;
+            border-radius: 8px;
+            padding: 14px 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            min-width: 260px;
+            max-width: 320px;
+            animation: toastIn .3s ease forwards;
+        }
+
+        .toast strong {
+            display: block;
+            font-size: 13px;
+            color: #f97316;
+            margin-bottom: 4px;
+        }
+
+        .toast p {
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .toast.hide {
+            animation: toastOut .3s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
+
     </style>
 
 </head>
 
 <body>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <header class="navbar">
 
@@ -67,6 +158,7 @@ $services = $serviceObj->getPopular(8);
     <nav>
         <a href="#home">Home</a>
         <a href="#services">Services</a>
+        <a href="search_service.php">Search</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -74,6 +166,13 @@ $services = $serviceObj->getPopular(8);
     <div class="nav-buttons">
 
         <?php if (isset($_SESSION['user_id'])): ?>
+
+            <a href="notifications.php" class="notification-bell">
+                🔔
+                <?php if ($unreadCount > 0): ?>
+                    <span class="notification-badge"><?php echo $unreadCount; ?></span>
+                <?php endif; ?>
+            </a>
 
             <span class="user-welcome">
                 Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
@@ -388,6 +487,51 @@ $services = $serviceObj->getPopular(8);
 
 <script src="assets/main.js"></script>
 
-</body>
+<script>
 
+<?php if (isset($_SESSION['user_id'])): ?>
+
+const toastContainer = document.getElementById('toastContainer');
+const shownIds = JSON.parse(sessionStorage.getItem('shownToastIds') || '[]');
+
+function showToast(message) {
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<strong>New Notification</strong><p>${message}</p>`;
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+function checkNotifications() {
+
+    fetch('get_new_notifications.php')
+        .then(res => res.json())
+        .then(data => {
+
+            data.forEach(item => {
+
+                if (!shownIds.includes(item.id)) {
+                    showToast(item.message);
+                    shownIds.push(item.id);
+                }
+            });
+
+            sessionStorage.setItem('shownToastIds', JSON.stringify(shownIds));
+        });
+}
+
+checkNotifications();
+setInterval(checkNotifications, 10000);
+
+<?php endif; ?>
+
+</script>
+
+</body>
 </html>

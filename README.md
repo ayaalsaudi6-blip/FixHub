@@ -13,8 +13,12 @@ The project was built using **PHP, MySQL, HTML, CSS, and JavaScript**, with **Ob
 * Session-based Authentication
 * Browse Available Services
 * View Service Details
+* Search Services (with live filtering)
+* Filter Services by Category
 * Submit Service Requests
 * Create Bookings
+* Receive Notifications for Booking Updates
+* Real-time Toast Notifications
 
 ### Admin Features
 
@@ -40,7 +44,6 @@ The project was built using **PHP, MySQL, HTML, CSS, and JavaScript**, with **Ob
 
 ## Project Structure
 
-```text
 FixHub/
 │
 ├── admin/
@@ -60,6 +63,7 @@ FixHub/
 ├── classes/
 │   ├── Auth.php
 │   ├── Booking.php
+│   ├── Notification.php
 │   ├── Service.php
 │   └── User.php
 │
@@ -72,18 +76,24 @@ FixHub/
 │   ├── booking.png
 │   ├── home-page.png
 │   ├── login.png
+│   ├── notifications.png
 │   ├── register.png
+│   ├── search-services.png
 │   ├── services.png
-│   └── soft-delete.png
+│   ├── soft-delete.png
+│   └── toast-messages.png
 │
+├── ajax_search.php
 ├── booking.php
+├── get_new_notifications.php
 ├── index.php
 ├── login.php
 ├── logout.php
+├── notifications.php
 ├── register.php
+├── search_service.php
 ├── service_details.php
 └── .gitignore
-```
 
 ## OOP Structure
 
@@ -93,6 +103,7 @@ The project uses Object-Oriented PHP to organize the main application responsibi
 * `Auth.php` — Handles user authentication and sessions.
 * `Service.php` — Handles service-related operations.
 * `Booking.php` — Handles booking and service request operations.
+* `Notification.php` — Handles creating and retrieving user notifications.
 * `Database.php` — Handles the connection to the MySQL database.
 
 ## Admin Service Management
@@ -108,15 +119,21 @@ The admin section provides service management functionality, including:
 
 The project uses **soft delete** functionality for services, allowing deleted services to be restored before permanent deletion.
 
+## Search & Filtering
+
+Users can search for services by keyword and filter results by category. The search updates automatically as the user types, without reloading the page.
+
+## Notifications
+
+Users receive a notification when they submit a booking. Notifications appear as a badge on the notification icon and as a toast message on the page. Users can view all notifications on a dedicated page.
+
 ## Database
 
 The application uses **MySQL** as its database and **PDO** for database connectivity.
 
 The database connection is handled through:
 
-```text
 config/Database.php
-```
 
 ## Screenshots
 
@@ -152,21 +169,29 @@ config/Database.php
 
 ![Soft Delete](screenshots/soft-delete.png)
 
+### Search Services
+
+![Search Services](screenshots/search-services.png)
+
+### Notifications
+
+![Notifications](screenshots/notifications.png)
+
+### Toast Messages
+
+![Toast Messages](screenshots/toast-messages.png)
+
 ## How to Run the Project Locally
 
 ### 1. Clone the Repository
 
-```bash
 git clone https://github.com/ayaalsaudi6-blip/FixHub.git
-```
 
 ### 2. Move the Project
 
 Place the project inside your XAMPP `htdocs` folder:
 
-```text
 C:\xampp\htdocs\FixHub
-```
 
 ### 3. Start XAMPP
 
@@ -181,17 +206,22 @@ Open **phpMyAdmin** and create the required MySQL database.
 
 Make sure the database name and connection settings match the configuration in:
 
-```text
 config/Database.php
-```
 
 ### 5. Run the Application
 
 Open the following URL in your browser:
 
-```text
 http://localhost/FixHub/
-```
+
+## Future Improvements
+
+* Real-time Chat between Users and Service Providers
+* Real Location Support using Maps and Coordinates
+* Service Provider Ratings and Reviews
+* Online Payment Integration
+* Email Notifications
+* Multi-language Support (Arabic / English)
 
 ## GitHub
 

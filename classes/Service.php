@@ -1,9 +1,7 @@
 <?php
-
 class Service
 {
     private $pdo;
-
     public function __construct($pdo)
     {
         $this->pdo = $pdo;
@@ -65,29 +63,85 @@ class Service
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function add($name, $description, $icon, $image)
+    public function search($keyword = '', $category = '', $location = '')
+    {
+        $sql = "SELECT * FROM services WHERE deleted_at IS NULL";
+        $params = [];
+
+        if ($keyword != '') {
+            $sql .= " AND (name LIKE :keyword OR description LIKE :keyword)";
+            $params[':keyword'] = "%$keyword%";
+        }
+
+        if ($category != '') {
+            $sql .= " AND category = :category";
+            $params[':category'] = $category;
+        }
+
+        if ($location != '') {
+            $sql .= " AND location = :location";
+            $params[':location'] = $location;
+        }
+
+        $sql .= " ORDER BY id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCategories()
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT DISTINCT category FROM services
+             WHERE category IS NOT NULL
+             AND deleted_at IS NULL"
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getLocations()
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT DISTINCT location FROM services
+             WHERE location IS NOT NULL
+             AND deleted_at IS NULL"
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function add($name, $description, $category, $icon, $image)
     {
         $stmt = $this->pdo->prepare(
             "INSERT INTO services
-            (name, description, icon, image)
+            (name, description, category, icon, image)
             VALUES
-            (:name, :description, :icon, :image)"
+            (:name, :description, :category, :icon, :image)"
         );
 
         return $stmt->execute([
             ":name" => $name,
             ":description" => $description,
+            ":category" => $category,
             ":icon" => $icon,
             ":image" => $image
         ]);
     }
 
-    public function update($id, $name, $description, $icon, $image)
+    public function update($id, $name, $description, $category, $icon, $image)
     {
         $stmt = $this->pdo->prepare(
             "UPDATE services
              SET name = :name,
                  description = :description,
+                 category = :category,
                  icon = :icon,
                  image = :image
              WHERE id = :id"
@@ -97,6 +151,7 @@ class Service
             ":id" => $id,
             ":name" => $name,
             ":description" => $description,
+            ":category" => $category,
             ":icon" => $icon,
             ":image" => $image
         ]);

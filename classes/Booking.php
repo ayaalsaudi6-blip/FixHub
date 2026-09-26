@@ -1,5 +1,7 @@
 <?php
 
+require_once "Notification.php";
+
 class Booking
 {
     private $pdo;
@@ -18,12 +20,24 @@ class Booking
             (:user_id, :service_id, :booking_date, :booking_time, :notes)"
         );
 
-        return $stmt->execute([
+        $success = $stmt->execute([
             ":user_id" => $userId,
             ":service_id" => $serviceId,
             ":booking_date" => $date,
             ":booking_time" => $time,
             ":notes" => $notes
         ]);
+
+        if ($success) {
+
+            $notification = new Notification($this->pdo);
+
+            $notification->create(
+                $userId,
+                "Your booking request has been received."
+            );
+        }
+
+        return $success;
     }
 }

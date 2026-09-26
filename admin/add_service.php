@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $name = $_POST['name'];
     $description = $_POST['description'];
+    $category = $_POST['category'];
     $icon = $_POST['icon'];
 
     $image = "";
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $service->add(
         $name,
         $description,
+        $category,
         $icon,
         $image
     );
@@ -97,7 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -175,6 +178,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 required
             ></textarea>
 
+            <label>Category</label>
+
+            <select
+                name="category"
+                required
+            >
+                <option value="">Select Category</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Carpentry">Carpentry</option>
+                <option value="Painting">Painting</option>
+            </select>
+
             <label>Icon</label>
 
             <input
@@ -202,13 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="index.php" class="cancel">
                     Cancel
                 </a>
-
             </div>
-
         </form>
-
     </div>
-
 </body>
-
 </html>

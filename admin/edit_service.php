@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $name = $_POST['name'];
     $description = $_POST['description'];
+    $category = $_POST['category'];
     $icon = $_POST['icon'];
 
     $image = $item['image'];
@@ -49,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id,
         $name,
         $description,
+        $category,
         $icon,
         $image
     );
@@ -102,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -193,6 +196,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 required
             ><?php echo htmlspecialchars($item['description']); ?></textarea>
 
+            <label>Category</label>
+
+            <select
+                name="category"
+                required
+            >
+                <option value="">Select Category</option>
+                <option value="Plumbing" <?php echo $item['category'] === 'Plumbing' ? 'selected' : ''; ?>>Plumbing</option>
+                <option value="Electrical" <?php echo $item['category'] === 'Electrical' ? 'selected' : ''; ?>>Electrical</option>
+                <option value="Cleaning" <?php echo $item['category'] === 'Cleaning' ? 'selected' : ''; ?>>Cleaning</option>
+                <option value="Carpentry" <?php echo $item['category'] === 'Carpentry' ? 'selected' : ''; ?>>Carpentry</option>
+                <option value="Painting" <?php echo $item['category'] === 'Painting' ? 'selected' : ''; ?>>Painting</option>
+            </select>
+
             <label>Icon</label>
 
             <input
@@ -236,11 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </a>
 
             </div>
-
         </form>
-
     </div>
-
 </body>
-
 </html>
